@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Medical Scheduler</title>
+    <style>
+        /* Modern Native CSS Variable Architecture */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+        }
+
+        /* Sleek Top Navigation Bar */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 2rem;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.02);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .server-badge {
+            background: var(--success-bg);
+            color: var(--success);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-anim 1.5s infinite;
+        }
+
+        @keyframes pulse-anim {
+            0% {
+                transform: scale(0.9);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Dashboard Grid Layout */
+        .workspace {
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .workspace {
+                grid-template-columns: 350px 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        /* Modernized Form Styling */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: #fafafa;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-card);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        button.btn-primary {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            transition: var(--transition);
+        }
+
+        button.btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Professional Admin Table Framework */
+        .queue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        button.btn-sync {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button.btn-sync:hover {
+            background: #edf2f7;
+            color: var(--text-main);
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .patient-cell {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .status-badge {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Navigation -->
+<header>
+    <div class="header-container">
+        <div class="logo">🏥 Clinic Control Center</div>
+        <div class="server-badge">
+            <div class="pulse"></div>
+            API Server Online
+        </div>
+    </div>
+</header>
+
+<!-- Content Workspace -->
+<div class="workspace">
+    <!-- Card 1: Form Intake System -->
+    <section class="card">
+        <h2>Book Appointment</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="patientName">Patient Name</label>
+                <input type="text" id="patientName" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="doctorName">Assigned Physician</label>
+                <input type="text" id="doctorName" required placeholder="Dr. Smith">
+            </div>
+            <div class="form-group">
+                <label for="appointmentTime">Date & Time</label>
+                <input type="datetime-local" id="appointmentTime" required>
+            </div>
+            <button type="submit" class="btn-primary">Confirm Booking</button>
+        </form>
+    </section>
+
+    <!-- Card 2: Live Scheduling Queue -->
+    <section class="card">
+        <div class="queue-header">
+            <h2>Live Scheduling Queue</h2>
+            <button onclick="fetchAppointments()" class="btn-sync">🔄 Sync Queue</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Physician</th>
+                    <th>Schedule Time</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody id="queueTableBody">
+                <!-- Dynamic data row placement -->
+                </tbody>
+            </table>
+        </div>
+        <div id="emptyState" class="empty-state">
+            No active appointments booked in this session.
+        </div>
+    </section>
+</div>
+
+<!-- JavaScript Data Stream Integration -->
+<script>
+    const API_URL = '/api/appointments';
+
+    // Retrieve recorded models via backend GET endpoint
+    async function fetchAppointments() {
+        try {
+            const response = await fetch(API_URL);
+            const appointments = await response.json();
+
+            const tableBody = document.getElementById('queueTableBody');
+            const emptyState = document.getElementById('emptyState');
+            tableBody.innerHTML = '';
+
+            if (appointments.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+
+            appointments.forEach(app => {
+                const cleanTime = new Date(app.appointmentTime).toLocaleString([], {
+                    dateStyle: 'medium', timeStyle: 'short'
+                });
+
+                const row = `
+                        <tr>
+                            <td class="patient-cell">${app.patientName}</td>
+                            <td>${app.doctorName}</td>
+                            <td style="color: var(--text-muted);">${cleanTime}</td>
+                            <td><span class="status-badge">${app.status}</span></td>
+                        </tr>
+                    `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        } catch (error) {
+            console.error("Queue Sync Failed:", error);
+        }
+    }
+
+    // Post intake form content payloads via backend POST endpoint
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            patientName: document.getElementById('patientName').value,
+            doctorName: document.getElementById('doctorName').value,
+            appointmentTime: document.getElementById('appointmentTime').value
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                document.getElementById('bookingForm').reset();
+                fetchAppointments(); // Instantly update view metrics
+            }
+        } catch (error) {
+            alert("Critical: Could not dispatch booking payload to server.");
+        }
+    });
+
+    // Run data synchronization on initial render
+    fetchAppointments();
+</script>
+</body>
+</html>
